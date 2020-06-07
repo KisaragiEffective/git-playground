@@ -1,2 +1,4 @@
 label1:
 - example1/*
+actions:
+- .github/actions/*
