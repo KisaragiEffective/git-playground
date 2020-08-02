@@ -1,4 +1,4 @@
-name: Scheduler
+name: Minecraft.jp status
 
 # https://help.github.com/en/github/automating-your-workflow-with-github-actions/events-that-trigger-workflows#scheduled-events-schedule
 on:
