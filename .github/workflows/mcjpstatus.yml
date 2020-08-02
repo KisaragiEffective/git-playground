@@ -13,4 +13,4 @@ jobs:
     - name: Run a one-line script
       run: |
         date
-        echo "Status: "$(wget --server-response --spider -S "http://minecraft.jp" 2>&1 | awk '/^  HTTP/{print $2}')
+        echo "Status: "$(wget --server-response --spider -S "https://minecraft.jp" 2>&1 | awk '/^  HTTP/{print $2}')
