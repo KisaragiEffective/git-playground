@@ -29,9 +29,9 @@ jobs:
         # TODAY = Date.today
         # FIRST = Date.new(TODAY.year, TODAY.month, 1)
         # SUNDAY = FIRST.next_day(7).prev_day(FIRST.wday)
-        # echo SUNDAY
+        # puts SUNDAY
         ruby  -e "require %q{date}
                   TODAY = Date.today
                   FIRST = Date.new(TODAY.year, TODAY.month, 1)
                   SUNDAY = FIRST.next_day(7).prev_day(FIRST.wday)
-                  echo SUNDAY.strftime(%q{%Y%m%d})"
+                  puts SUNDAY.strftime(%q{%Y%m%d})"
