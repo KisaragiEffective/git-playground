@@ -17,7 +17,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Setup Ruby
-        run: "sudo apt-get install ruby=2.7"
+        run: "sudo apt-get install ruby=1:2.7+1"
       # https://github.com/rubygems/rubygems/issues/3068#issuecomment-574775885
       - name: Update gem
         run: sudo gem update -N --system 3.0.6
