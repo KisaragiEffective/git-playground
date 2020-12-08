@@ -33,3 +33,8 @@ jobs:
       - name: "Ruby: test run" 
         run: |
           ruby -e "puts %q(Hello from Ruby!)"
+      - uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/IDEA-TEMPLATE.md
