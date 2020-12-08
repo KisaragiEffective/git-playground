@@ -20,7 +20,7 @@ jobs:
         run: sudo apt-get install ruby
       # https://github.com/rubygems/rubygems/issues/3068#issuecomment-574775885
       - name: Update gem
-        run: gem update --system 3.0.6
+        run: sudo gem update --system 3.0.6
       - name: Check ruby version
         run: ruby -v
 
