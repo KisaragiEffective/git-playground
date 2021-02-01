@@ -1,2 +1,2 @@
 # git-playground
-An sandbox intended for test
+An sandbox intended for test.
