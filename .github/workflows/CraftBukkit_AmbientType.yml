@@ -120,7 +120,7 @@ jobs:
           ls __craftbukkit/org/bukkit/craftbukkit
       - name: Run ImplementationDropper.jar
         run: |
-          cb=$(ls | grep v | head -n 1)
+          cb=$(ls __craftbukkit/org/bukkit/craftbukkit | grep v | head -n 1)
           echo "package: org.bukkit.craftbukkit.$cb"
           java -jar ImplementationDropper.jar "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
       - name: Rezip
