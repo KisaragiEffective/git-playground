@@ -85,11 +85,11 @@ jobs:
       - name: Install Java 8 if needed
         run: |
           sudo apt-get install openjdk-8-jre
-        if: ${{ matrix.java }} == 8
+        if: matrix.java == 8
       - name: Install Java 11 if needed
         run: |
           sudo apt-get install openjdk-11-jre
-        if: ${{ matrix.java }} == 11
+        if: matrix.java == 11
       - name: check Java version
         run: java -version
       - name: Get BuildTools.jar
