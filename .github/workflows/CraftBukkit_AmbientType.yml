@@ -113,18 +113,14 @@ jobs:
       - name: Run BuildTools.jar
         run: |
           java -jar BuildTools.jar --rev ${{matrix.id}} --compile craftbukkit
-      - name: Check craftbukkit.jar, or copy from maven-local
+      - name: Check craftbukkit.jar
         run: |
+          ls | grep -E "\.jar"
           need=$(ls | grep -F craftbukkit-${{matrix.id}}.jar | ruby -e "puts gets == nil")
           if [ $need = "true" ]; then
-            echo "artifact not found, will copy from maven"
-            echo "craftbukkit/target:"
-            ls CraftBukkit/target
-            echo "maven:org.bukkit.craftbukkit:"
-            ls /home/runner/.m2/repository/org/bukkit/craftbukkit
-            v=${{matrix.id}}-R0.1-SNAPSHOT
-            echo "maven version: $v"
-            cp /home/runner/.m2/repository/org/bukkit/craftbukkit/$v/craftbukkit-$v.jar craftbukkit-${{matrix.id}}.jar
+            echo "artifact not found, will copy"
+            from=CraftBukkit/target/$(ls CraftBukkit/target | (grep -E "\.jar$" || exit 12) | head -n 1)
+            cp $from craftbukkit-${{matrix}}.jar
           else
             echo "found, no need to copy"
           fi
