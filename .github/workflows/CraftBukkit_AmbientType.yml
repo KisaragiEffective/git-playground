@@ -120,7 +120,7 @@ jobs:
           if [ $need = "true" ]; then
             echo "artifact not found, will copy"
             from=CraftBukkit/target/$(ls CraftBukkit/target | (grep -E "\.jar$" || exit 12) | head -n 1)
-            cp $from craftbukkit-${{matrix}}.jar
+            cp $from craftbukkit-${{matrix.id}}.jar
           else
             echo "found, no need to copy"
           fi
