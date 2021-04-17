@@ -118,6 +118,13 @@ jobs:
       - name: show craftbukkit directory
         run: |
           ls __craftbukkit/org/bukkit/craftbukkit
+      - name: Inspect ImplementationDropper.jar
+        run: |
+          unzip ImplementationDropper.jar -d __dropper
+          echo "__dropper:"
+          ls __dropper
+          echo "executable:"
+          ls __dropper/com/github/kisaragieffective/fakebinding
       - name: Run ImplementationDropper.jar
         run: |
           cb=$(ls __craftbukkit/org/bukkit/craftbukkit | grep v | head -n 1)
