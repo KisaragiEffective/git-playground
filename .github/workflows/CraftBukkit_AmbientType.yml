@@ -115,8 +115,8 @@ jobs:
           java -jar BuildTools.jar --rev ${{matrix.id}} --compile craftbukkit
       - name: Check craftbukkit.jar, or copy from maven-local
         run: |
-          ls | grep -F craftbukkit-${{matrix.id}}.jar
-          if [ $? -ne 0 ]; then
+          need=$(ls | grep -F craftbukkit-${{matrix.id}}.jar | ruby -e "puts gets == nil")
+          if [ $need = "true" ]; then
             echo "artifact not found, will copy from maven"
             v=${{matrix.id}}-R0.1-SNAPSHOT
             echo "maven version: $v"
