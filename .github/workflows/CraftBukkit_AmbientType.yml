@@ -166,7 +166,7 @@ jobs:
         run: |
           files=$(ls | grep -v "craftbukkit-${{matrix.id}}.d.jar")
           for file in "$files[@]"; do
-            rm -r file
+            rm -r "$file"
           done
       - name: Commit then push
         run: |
