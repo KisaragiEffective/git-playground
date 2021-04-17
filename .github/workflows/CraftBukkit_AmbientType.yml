@@ -99,6 +99,10 @@ jobs:
       - name: Get ImplementationDropper.jar
         run: |
           wget https://github.com/KisaragiEffective/b1nar1e5/blob/master/bukkit-fake-bindings.jar?raw=true -O ImplementationDropper.jar
+      - name: Test dropper
+        run: |
+          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //")
+          java -cp ./ImplementationDropper "$main" || echo "Test OK"
       - name: Check directory structure
         run: |
           ls -l
