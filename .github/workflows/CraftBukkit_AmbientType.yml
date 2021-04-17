@@ -1,56 +1,99 @@
 name: Generator for CraftBukkit ambient type
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
-  # TODO: this section 
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+custom_attribute:
+  - &java11
+    java: 11
+  - &java8
+    java: 8
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
-        id:
-          - 1.16.5
-          - 1.16.4
-          - 1.16.3
-          - 1.16.2
-          - 1.16.1
-          - 1.15.2
-          - 1.15.1
-          - 1.15
-          - 1.14.4
-          - 1.14.3
-          - 1.14.2
-          - 1.14.1
-          - 1.14
-          - 1.13.2
-          - 1.13.1
-          - 1.13
-          - 1.12.2
-          - 1.12.1
-          - 1.12
-          - 1.11.2
-          - 1.11.1
-          - 1.11
-          - 1.10.2
-          - 1.10.1
-          - 1.10
-          - 1.9.4
-          - 1.9.2
-          - 1.9
-          - 1.8.8
-        
-    
+        include:
+          # some legacy version will not accept newer JDK
+          - 
+            <<: *java11
+            id: 1.16.5
+          - <<: *java11
+            id: 1.16.4
+          - <<: *java11
+            id: 1.16.3
+          - <<: *java11
+            id: 1.16.2
+          - <<: *java11
+            id: 1.16.1
+          - <<: *java11
+            id: 1.16
+          - <<: *java11
+            id: 1.15.2
+          - <<: *java11
+            id: 1.15.1
+          - <<: *java11
+            id: 1.15
+          - <<: *java11
+            id: 1.14.4
+          - <<: *java11
+            id: 1.14.3
+          - <<: *java11
+            id: 1.14.2
+          - <<: *java11
+            id: 1.14.1
+          - <<: *java11
+            id: 1.14
+          - <<: *java11
+            id: 1.13.2
+          - <<: *java11
+            id: 1.13.1
+          - <<: *java11
+            id: 1.13
+          - <<: *java8
+            id: 1.12.2
+          - <<: *java8
+            id: 1.12.1
+          - <<: *java8
+            id: 1.12
+          - <<: *java8
+            id: 1.11.2
+          - <<: *java8
+            id: 1.11.1
+          - <<: *java8
+            id: 1.11
+          - <<: *java8
+            id: 1.10.2
+          - <<: *java8
+            id: 1.10.1
+          - <<: *java8
+            id: 1.10
+          - <<: *java8
+            id: 1.9.4
+          - <<: *java8
+            id: 1.9.2
+          - <<: *java8
+            id: 1.9
+          - <<: *java8
+            id: 1.8.8
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Install Java 8 if needed
+        run: |
+          sudo apt-get install openjdk-8-jre
+        if: ${{ matrix.java }} == 8
+      - name: Install Java 11 if needed
+        run: |
+          sudo apt-get install openjdk-11-jre
+        if: ${{ matrix.java }} == 11
       - name: check Java version
         run: java -version
       - name: Get BuildTools.jar
