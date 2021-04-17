@@ -92,7 +92,8 @@ jobs:
       - name: check Java version
         run: |
           sudo update-alternatives --list java
-          sudo update-alternatives --display | grep java
+          sudo update-alternatives --display java
+          sudo update-alternatives --get-selections java | grep java
           java -version
       - name: Get BuildTools.jar
         run: |
