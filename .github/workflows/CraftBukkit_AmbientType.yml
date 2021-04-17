@@ -76,6 +76,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: dig directory
+        run: |
+          cd $GITHUB_WORKSPACE
+          mkdir skeleton
+          cd skeleton
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Install Java 8 if needed
         run: |
@@ -155,5 +162,16 @@ jobs:
       - name: Rezip
         run: |
           zip -r craftbukkit-${{matrix.id}}.d.jar __dest__
-      - name: Complete
-        run: ls
+      - name: Remove temporary files
+        run: |
+          files=$(ls | grep -v "craftbukkit-${{matrix.id}}.d.jar")
+          for file in "$files[@]"; do
+            rm -r file
+          done
+      - name: Commit then push
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update"
+          git push
