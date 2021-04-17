@@ -118,9 +118,15 @@ jobs:
           need=$(ls | grep -F craftbukkit-${{matrix.id}}.jar | ruby -e "puts gets == nil")
           if [ $need = "true" ]; then
             echo "artifact not found, will copy from maven"
+            echo "craftbukkit/target:"
+            ls CraftBukkit/target
+            echo "maven:org.bukkit.craftbukkit:"
+            ls /home/runner/.m2/repository/org/bukkit/craftbukkit
             v=${{matrix.id}}-R0.1-SNAPSHOT
             echo "maven version: $v"
             cp /home/runner/.m2/repository/org/bukkit/craftbukkit/$v/craftbukkit-$v.jar craftbukkit-${{matrix.id}}.jar
+          else
+            echo "found, no need to copy"
           fi
           
       - name: Post-work
