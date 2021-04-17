@@ -15,9 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
-      max-parallel: 8
       matrix:
-        parallelism: [ 8 ]
         id:
           - 1.16.5
           - 1.16.4
@@ -65,7 +63,7 @@ jobs:
           ls -l
       - name: Pre-work
         run: |
-          echo "[CraftBukkit/Build/v${{matrix.id}} build started"
+          echo "[CraftBukkit/Build/v${{matrix.id}}] build started"
       - name: Run BuildTools.jar
         run: |
           java -jar BuildTools.jar --rev ${{matrix.id}} --compile craftbukkit
