@@ -164,7 +164,7 @@ jobs:
           zip -r craftbukkit-${{matrix.id}}.d.jar __dest__
       - name: Remove temporary files
         run: |
-          files=$(ls | grep -v "craftbukkit-${{matrix.id}}.d.jar")
+          files=$(ls | grep -v "craftbukkit-${{matrix.id}}.d.jar" | sed "/\n/ /")
           for file in "$files[@]"; do
             rm -r "$file"
           done
