@@ -101,8 +101,9 @@ jobs:
           wget https://github.com/KisaragiEffective/b1nar1e5/blob/master/bukkit-fake-bindings.jar?raw=true -O ImplementationDropper.jar
       - name: Test dropper
         run: |
-          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //")
-          java -cp ./ImplementationDropper "$main" || echo "Test OK"
+          # NOTE! Strip CRLF or WON'T WORK !!
+          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //" | tr -d '\n\r')
+          java -cp ./ImplementationDropper.jar "$main" || echo "Test OK"
       - name: Check directory structure
         run: |
           ls -l
@@ -131,14 +132,14 @@ jobs:
           ls __dropper/com/github/kisaragieffective/fakebinding
       - name: Run ImplementationDropper.jar
         run: |
-          cb=$(ls __craftbukkit/org/bukkit/craftbukkit | grep v | head -n 1)
+          cb=$(ls __craftbukkit/org/bukkit/craftbukkit | grep v | head -n 1 | tr -d '\n')
           echo "package: org.bukkit.craftbukkit.$cb"
-          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //")
+          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //" | tr -d '\n\r')
           echo "main class: $main"
-          mkdir -p lib
-          mv craftbukkit-${{matrix.id}}.jar lib
+          cp='ImplementationDropper.jar:craftbukkit-${{matrix.id}}'
+          echo "classpath: $cp"
           # https://stackoverflow.com/questions/18413014/run-a-jar-file-from-the-command-line-and-specify-classpath
-          java -cp 'ImplementationDropper.jar:lib/*:.' "$main" "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
+          java -cp "$cp" "$main" "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
       - name: Rezip
         run: |
           zip -r craftbukkit-${{matrix.id}}.d.jar __dest__
