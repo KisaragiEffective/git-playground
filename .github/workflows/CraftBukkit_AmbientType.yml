@@ -127,7 +127,7 @@ jobs:
           mkdir -p lib
           mv craftbukkit-${{matrix.id}}.jar lib
           # https://stackoverflow.com/questions/18413014/run-a-jar-file-from-the-command-line-and-specify-classpath
-          java -cp ImplementationDropper.jar:lib/* "$main" "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
+          java -cp 'ImplementationDropper.jar:lib/*' "$main" "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
       - name: Rezip
         run: |
           zip -r craftbukkit-${{matrix.id}}.d.jar __dest__
