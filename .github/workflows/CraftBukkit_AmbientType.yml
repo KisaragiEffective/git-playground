@@ -54,10 +54,11 @@ jobs:
       - name: check Java version
         run: java -version
       - name: Get BuildTools.jar
-        run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+        run: |
+          wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
       - name: Get ImplementationDropper.jar
         run: |
-          echo "TODO: This section does nothing"
+          wget https://github.com/KisaragiEffective/b1nar1e5/blob/master/bukkit-fake-bindings.jar?raw=true -O ImplementationDropper.jar
       - name: Check directory structure
         run: |
           ls -l
@@ -71,10 +72,14 @@ jobs:
         run: |
           echo "[CraftBukkit/Build/v${{matrix.id}}] build finished"
           ls -l
-      # NOTE: This section is very important.
+      - name: unzip craftbukkit.jar
+        run: |
+          unzip craftbukkit.jar -d __craftbukkit
       - name: Run ImplementationDropper.jar
         run: |
-          # something like 
-          # java -jar ImplementationDropper.jar --input Foo.jar --package=org.bukkit.craftbukkit.*
-          echo "TODO"
-
+          java -jar ImplementationDropper.jar __craftbukkit/org/bukkit/craftbukkit/ __dest__
+      - name: Rezip
+        run: |
+          zip -r craftbukkit.d.jar __dest__
+      - name: Complete
+        run: ls
