@@ -121,10 +121,11 @@ jobs:
       - name: Run ImplementationDropper.jar
         run: |
           cb=$(ls __craftbukkit/org/bukkit/craftbukkit | grep v | head -n 1)
-          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //")
           echo "package: org.bukkit.craftbukkit.$cb"
+          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //")
           echo "main class: $main"
-          java -cp ImplementationDropper.jar:craftbukkit-${{matrix.id}}.jar "$main" "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
+          # https://stackoverflow.com/questions/18413014/run-a-jar-file-from-the-command-line-and-specify-classpath
+          java -cp ./* "$main" "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
       - name: Rezip
         run: |
           zip -r craftbukkit-${{matrix.id}}.d.jar __dest__
