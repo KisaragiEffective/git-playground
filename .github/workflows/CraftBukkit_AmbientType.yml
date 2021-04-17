@@ -115,6 +115,7 @@ jobs:
       - name: unzip craftbukkit.jar
         run: |
           unzip craftbukkit-${{matrix.id}}.jar -d __craftbukkit
+          ls __craftbukit/org/bukkit/craftbukkit/
       - name: Run ImplementationDropper.jar
         run: |
           java -jar ImplementationDropper.jar __craftbukkit/org/bukkit/craftbukkit/ __dest__
