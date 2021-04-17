@@ -121,7 +121,7 @@ jobs:
       - name: Run ImplementationDropper.jar
         run: |
           cb=$(ls __craftbukkit/org/bukkit/craftbukkit | grep v | head -n 1)
-          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF ö grep "Main-Class:" ö sed "s/Main-Class: //")
+          main=$(unzip -p ImplementationDropper.jar META-INF/MANIFEST.MF | grep "Main-Class:" | sed "s/Main-Class: //")
           echo "package: org.bukkit.craftbukkit.$cb"
           echo "main class: $main"
           java -cp ImplementationDropper.jar:craftbukkit-${{matrix.id}}.jar "$main" "__craftbukkit/org/bukkit/craftbukkit/$cb" __dest__
