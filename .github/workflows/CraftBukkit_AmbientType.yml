@@ -113,6 +113,16 @@ jobs:
       - name: Run BuildTools.jar
         run: |
           java -jar BuildTools.jar --rev ${{matrix.id}} --compile craftbukkit
+      - name: Check craftbukkit.jar, or copy from maven-local
+        run: |
+          ls | grep -F craftbukkit-${{matrix.id}}.jar
+          if [ $? -ne 0 ]; then
+            echo "artifact not found, will copy from maven"
+            v=${{matrix.id}}-R0.1-SNAPSHOT
+            echo "maven version: $v"
+            cp /home/runner/.m2/repository/org/bukkit/craftbukkit/$v/craftbukkit-$v.jar craftbukkit-${{matrix.id}}.jar
+          fi
+          
       - name: Post-work
         run: |
           echo "[CraftBukkit/Build/v${{matrix.id}}] build finished"
