@@ -1,12 +1,11 @@
 name: Seichi Server Idea conference notification
 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   schedule: 
-    # JST: 18:30
-    - cron: "30 11 * * 0"
+    # JST: 19:30
+    - cron: "30 11"
       
-  workflow_dispatch: ~
+  workflow_dispatch:
 jobs:
   send:
     # The type of runner that the job will run on
@@ -25,13 +24,24 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: "Ruby: checkdate" 
         run: |
-          ruby -e "require %q(date)
-          p ENV
-          if Date.today != Date.new(2021, 1, 10) && !ENV[%q(DEBUG)] then
+          ruby -e 'require "date"
+          if ENV["OVERRIDE"] then
+            X_DAY = Date.iso8601(ENV["OVERRIDE"]).day
+          else
+            TODAY = Date.now
+            YEAR = TODAY.year
+            MONTH = TODAY.month
+            DAY = TODAY.day
+            FIRST = Date.new(YEAR, MONTH, 1)
+            FIRST_WEEKDAY = FIRST.wday
+            FIRST_SUNDAY = 1 + (7 - FIRST_WEEKDAY) % 7
+            X_DAY = FIRST_SUNDAY
+          end
+          
+          if !ENV["DEBUG"] && DAY != X_SUNDAY then
             puts %q(今日はアイデア会議の日ではありません)
             exit 1
-          end
-          "
+          end'
       - uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
