@@ -28,7 +28,7 @@ jobs:
           if ENV["OVERRIDE"] then
             X_DAY = Date.iso8601(ENV["OVERRIDE"]).day
           else
-            TODAY = Date.now
+            TODAY = Date.today
             YEAR = TODAY.year
             MONTH = TODAY.month
             DAY = TODAY.day
