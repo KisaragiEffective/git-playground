@@ -3,7 +3,7 @@ name: Seichi Server Idea conference notification
 on:
   schedule: 
     # JST: 19:30
-    - cron: "30 11"
+    - cron: "30 11 * * *"
       
   workflow_dispatch:
 jobs:
