@@ -38,7 +38,7 @@ jobs:
             X_DAY = FIRST_SUNDAY
           end
           
-          if !ENV["DEBUG"] && DAY != X_SUNDAY then
+          if !ENV["DEBUG"] && DAY != X_DAY then
             puts %q(今日はアイデア会議の日ではありません)
             exit 1
           end'
