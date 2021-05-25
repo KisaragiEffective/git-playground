@@ -18,7 +18,7 @@ jobs:
           -v \
           -H "Authorization: token ${{ github.token }}" \
           -H 'Accept: application/vnd.github.v3.raw' \
-          -L "https://api.github.com/repos/KisaragiEffective/privatefile/contents/SAMETIA" \
+          -L "https://api.github.com/repos/KisaragiEffective/publicfile/contents/123456" \
           -o BANNED_CONTRIBUTOR_FILE \ 
           || (echo "failed. maybe token is invalid?"; exit 1)      
   trigger_pr:
