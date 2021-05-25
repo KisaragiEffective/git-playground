@@ -1,0 +1,41 @@
+name: Decline contributions from banned user
+
+on:
+  pull_request:
+  issue:
+  workflow_dispatch:
+
+jobs:
+  get_file:
+    runs-on: ubuntu-latest
+    env:
+      BANNED_CONTRIBUTOR_FILE_PATH: https://api.github.com/KisaragiEffective/privatefile/SAMETIA
+    steps:
+      - name: Get banned users
+        run: |
+          curl \
+          -H "Authorization: token ${{ github.token }}" \
+          -H 'Accept: application/vnd.github.v3.raw' \
+          -L "$BANNED_CONTRIBUTOR_FILE_PATH" \
+          -o BANNED_CONTRIBUTOR_FILE \ 
+          || (echo "failed. maybe token is invalid?"; exit 1)      
+  trigger_pr:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/rubygems/rubygems/issues/3068#issuecomment-574775885
+      - name: Update gem
+        run: sudo gem update -N --system 3.0.6
+      - name: Check ruby version
+        run: ruby -v
+      - name: Check if contains
+        run: |
+          # get PR author by ${{ github.event.pull_request.user.login }}
+          ruby -e "
+          require 'set'
+          # request unique id (not display name; i.e. 48310258 instead of KisaragiEffective.
+          AUTHOR = ${{ github.event.pull_request.user.id }} || ${{ github.event.issue.user.id }}
+          puts %Q(Open by #{AUTHOR})
+          exit 0
+          "
+     needs:
+       - get_file
