@@ -38,5 +38,5 @@ jobs:
           puts %Q(Open by #{AUTHOR})
           exit 0
           "
-     needs:
+    needs:
        - get_file
