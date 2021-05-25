@@ -10,7 +10,7 @@ jobs:
   get_file:
     runs-on: ubuntu-latest
     env:
-      BANNED_CONTRIBUTOR_FILE_PATH: https://api.github.com/KisaragiEffective/privatefile/SAMETIA
+      BANNED_CONTRIBUTOR_FILE_PATH: https://api.github.com/repos/KisaragiEffective/privatefile/content/SAMETIA
     steps:
       - name: Get banned users
         run: |
