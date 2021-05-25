@@ -3,7 +3,7 @@ name: Decline contributions from banned user
 on:
   pull_request:
     branches: [ master ]
-  issue:
+  issues:
   workflow_dispatch:
 
 jobs:
