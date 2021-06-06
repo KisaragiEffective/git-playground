@@ -31,12 +31,12 @@ jobs:
       - name: Check if contains
         run: |
           # get PR author by ${{ github.event.pull_request.user.login }}
-          ruby -e "
-          require 'set'
+          ruby -e '
+          require "set"
           # request unique id (not display name; i.e. 48310258 instead of KisaragiEffective.
           AUTHOR_ID = ("${{ github.event.pull_request.user.id || github.event.issue.user.id }}").to_i
           puts %Q(Open by #{AUTHOR_ID})
           exit 0
-          "
+          '
     needs:
        - get_file
