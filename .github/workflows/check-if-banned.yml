@@ -34,8 +34,8 @@ jobs:
           ruby -e "
           require 'set'
           # request unique id (not display name; i.e. 48310258 instead of KisaragiEffective.
-          AUTHOR = %w(${{ github.event.pull_request.user.id }} ${{ github.event.issue.user.id }})[0].to_i
-          puts %Q(Open by #{AUTHOR})
+          AUTHOR_ID = ("${{ github.event.pull_request.user.id || github.event.issue.user.id }}").to_i
+          puts %Q(Open by #{AUTHOR_ID})
           exit 0
           "
     needs:
