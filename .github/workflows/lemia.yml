@@ -1,0 +1,69 @@
+name: VRChat - Upload automatically
+
+on:
+  workflow_dispatch:
+
+jobs:
+  do_all_things:
+    runs-on: windows-2019
+    
+    steps:
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+      - name: Install Unity
+        run: |
+          if (${{env.version}} -eq 2019) {
+            $url = 'https://unity3d.com/get-unity/download?thank-you=update&download_nid=65056&os=Win'
+            # TODO: あとのバージョンは適当にあとで実装する
+          } else {
+            throw "Illegal version. Excepted: one of [2016, 2017, 2018, 2019] / Got: ${{env.version}}"
+          }
+          
+          Invoke-WebRequest $url -OutFile ./UnityInstaller.exe
+          
+          ./UnityInstaller.exe /S
+        with:
+          version: 2019
+      - name: authorize
+        run: |
+          $config = (Invoke-WebRequest "https://vrchat.com/api/1/config").Content | ConvertFrom-Json
+          $apiToken = $config.clientApiKey
+          $encodedBasicAuth = ruby -e '
+          require %q!uri!;
+          def e(...)
+            URI.encode_www_form_component(...)
+          end
+          print e(%q!${{env.username}}!), ?:, e(%q!{{env.password}}!)'
+        with:
+          # username - it's not "display name".
+          username: ${{secrets.VRCHAT_USERNAME}}
+          # password
+          password: ${{secrets.VRCHAT_PASSWORD}}
+          # optional unless 2FA has been enabled
+          # otpauth://totp/VRChat:<mail address>?secret=<secret>&issuer=VRChat
+          # type the secret part in the repository secrets - this shouldn't be exposed to public definitely for security reason.
+          # unless you're sure about what you're doing, DO NOT TYPE KEY directly.
+          otp_key: ${{secrets.VRCHAT_TOTP_KEY}}
+      - name: Import VRChat SDK from unitypackage
+  trigger_pr:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/rubygems/rubygems/issues/3068#issuecomment-574775885
+      - name: Update gem
+        run: sudo gem update -N --system 3.0.6
+      - name: Check ruby version
+        run: ruby -v
+      - name: Check if contains
+        run: |
+          # get PR author by ${{ github.event.pull_request.user.login }}
+          ruby -e '
+          require "set"
+          # request unique id (not display name; i.e. 48310258 instead of KisaragiEffective.
+          AUTHOR_ID = ("${{ github.event.pull_request.user.id || github.event.issue.user.id }}").to_i
+          puts %Q(Open by #{AUTHOR_ID})
+          exit 0
+          '
+    needs:
+       - get_file
