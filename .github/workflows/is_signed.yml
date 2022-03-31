@@ -1,0 +1,25 @@
+# This is a basic workflow that is manually triggered
+
+name: Signed?
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  pull_request:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  greet:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: echo signing status
+      run: |
+        BASE_COMMIT=$(git merge-base ${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.ref }})
+        LOGS=$(git log $BASE_COMMIT.. --pretty='%H %ae %G?')
+        echo "$LOGS"
+        
