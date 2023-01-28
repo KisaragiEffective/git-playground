@@ -27,7 +27,7 @@ jobs:
         git fetch
         git branch --list
         git branch -r
-        if git diff "${GITHUB_BASE_REF}...${GITHUB_HEAD_REF}" --name-only | xargs basename | grep -E '.*\*.*'; then
+        if git diff "origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF}" --name-only | xargs basename | grep -E '.*\*.*'; then
           echo "Asterisks cannot be appeared in file name, because it causes file issue on Windows." >&2
           exit 1
         fi
