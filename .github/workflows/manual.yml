@@ -1,0 +1,30 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  - pull_request
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  greet:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Checkout all revision
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    # Runs a single command using the runners shell
+    - name: Check
+      run: |
+        if git diff "${GITHUB_BASE_REF}...${GITHUB_HEAD_REF}" --name-only | xargs basename | grep -E '.*\*.*'; then
+          echo "Asterisks cannot be appeared in file name, because it causes file issue on Windows." >&2
+          exit 1
+        fi
+    
