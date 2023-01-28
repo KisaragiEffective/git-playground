@@ -23,7 +23,9 @@ jobs:
     # Runs a single command using the runners shell
     - name: Check
       run: |
+        git branch --list
         git fetch
+        git branch --list
         if git diff "${GITHUB_BASE_REF}...${GITHUB_HEAD_REF}" --name-only | xargs basename | grep -E '.*\*.*'; then
           echo "Asterisks cannot be appeared in file name, because it causes file issue on Windows." >&2
           exit 1
