@@ -1,34 +1,38 @@
-# This is a basic workflow that is manually triggered
+# This file is licensed under MIT License.
+# Copyright 2023 Kisaragi Marine, KisaragiEffective
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in the
+# Software without restriction, including without limitation the rights to use, copy,
+# modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the
+# following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-name: Manual workflow
-
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
+name: Invalid character checker for NTFS
 on:
   - pull_request
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
+  check:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Checkout all revision
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    # Runs a single command using the runners shell
     - name: Check
       run: |
-        git branch --list
-        git fetch
-        git branch --list
-        git branch -r
         if git diff "origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF}" --name-only | xargs basename | grep -E '.*\*.*'; then
-          echo "Asterisks cannot be appeared in file name, because it causes file issue on Windows." >&2
+          echo "Asterisks cannot be appeared in file names, because they cannot be created on Windows (more generally, on NTFS)." >&2
           exit 1
         fi
-    
