@@ -18,7 +18,7 @@ jobs:
       run: |
         sudo apt install jq
         echo "error: Direct push was detected!!"
-        PUSHER_GITHUB="${{ event.pusher.username}}"
+        PUSHER_GITHUB="${{ github.event.pusher.username }}"
         echo "= cause: ${PUSHER_GITHUB}'s push"
         echo "= help: This is not recommended."
         echo "= help: Please revert those commit github."
