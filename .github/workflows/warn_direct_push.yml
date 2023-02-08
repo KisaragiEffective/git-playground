@@ -14,7 +14,7 @@ jobs:
         fetch-depth: 0
     - 
       name: Do something
-      if: github.event_name != 'pull_request'
+      if: ${{ github.event_name != 'pull_request' }}
       run: |
         sudo apt install jq
         echo "error: Direct push was detected!!"
