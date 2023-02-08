@@ -23,7 +23,7 @@ jobs:
         echo "  help: This is not recommended."
         echo "  help: Please revert those commit github."
         # TODO: checkout branch and revert default branch to base.
-        PUSHER_DISCORD="$(echo '${{ secrets.DIRECT_PUSH_DETECTOR_USER_MAPS }}' | jq '[.[] | ({ key: .github[], value: .discord })] | from_entries" | jq -r ".$PUSHER_GITHUB"
+        PUSHER_DISCORD="$(echo '${{ secrets.DIRECT_PUSH_DETECTOR_USER_MAPS }}' | jq '[.[] | ({ key: .github[], value: .discord })] | from_entries" | jq -r ".$PUSHER_GITHUB")"
         PUSHER_DISCORD_MENTION=""
         if [ "$PUSHER_DISCORD" -eq "null" ]; then
           echo "warn: pusher's Discord numeric id could not found."
