@@ -1,0 +1,37 @@
+on:
+  push:
+    - warn-target
+ 
+jobs:
+  check:
+    -
+      name: Checkout whole repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - 
+      name: Do something
+      if: github.event_name != 'pull_request'
+      run: |
+        sudo apt install jq
+        echo "error: Direct push was detected!!"
+        PUSHER_GITHUB="${{ event.pusher.username}}"
+        echo "= cause: ${PUSHER_GITHUB}'s push"
+        echo "= help: This is not recommended."
+        echo "= help: Please revert those commit github."
+        # TODO: checkout branch and revert default branch to base.
+        PUSHER_DISCORD="$(echo '${{ secrets.DIRECT_PUSH_DETECTOR_USER_MAPS }}' | jq '[.[] | ({ key: .github[], value: .discord })] | from_entries" | jq -r ".$PUSHER_GITHUB"
+        PUSHER_DISCORD_MENTION=""
+        if [ "$PUSHER_DISCORD" -eq "null" ]; then
+          echo "warn: pusher's Discord numeric id could not found."
+          echo "= help: To solve this warning, please register $PUSHER_GITHUB explicitly."
+        else
+          PUSHER_DISCORD_MENTION="<@${PUSHER_DISCORD}>"
+        fi
+        
+        jq -n \
+          --arg discord_user_mention "<@1>" \
+          --arg iso8601_timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+          --arg github_repository https://github.com/KisaragiEffective/git-playground \
+          '{"content":$discord_user_mention,"embeds":[{"title":"Direct push deteceted","description":"Direct push is not recommended. Please consider revert it and open equivalent Pull request.","url":$github_repository,"timestamp":$iso8601_timestamp,"color":16711680,"author":{"name":"GitHub Actions","url":"https://github.com/"}}]}' | \
+        curl -d@- '${{ secrets.DIRECT_PUSH_DETECTOR_DISCORD_REPORT_WEBHOOK }}'
