@@ -1,9 +1,12 @@
 on:
   push:
+    branches:
     - warn-target
  
 jobs:
   check:
+    runs-on: ubuntu-latest
+    steps:
     -
       name: Checkout whole repository
       uses: actions/checkout@v3
