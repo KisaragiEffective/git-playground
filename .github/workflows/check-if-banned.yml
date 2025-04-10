@@ -23,9 +23,6 @@ jobs:
   trigger_pr:
     runs-on: ubuntu-latest
     steps:
-      # https://github.com/rubygems/rubygems/issues/3068#issuecomment-574775885
-      - name: Update gem
-        run: sudo gem update -N --system 3.0.6
       - name: Check ruby version
         run: ruby -v
       - name: Check if contains
